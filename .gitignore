@@ -3,3 +3,6 @@
 
 # Ignore files from bin folder in the main
 /main/bin
+
+
+**/build/
