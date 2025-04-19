@@ -23,9 +23,16 @@ Follow these steps to set up the Arduino CLI, install the correct ESP32 version,
 
 ### 1. Install Arduino CLI
 
-1. Download the Arduino CLI from the [official website](https://arduino.github.io/arduino-cli/installation/).
+1. Download the Arduino CLI from the [official website](https://arduino.github.io/arduino-cli/installation/) 
 2. Follow the installation instructions for your operating system.
-3. Verify the installation by running the following command in your terminal:
+3. Install Arduino CLI usin Intall_dependencies.sh
+
+```bash	
+chmod +x Install_dependencies.sh
+./Install_dependencies.sh
+```
+
+4. Verify the installation by running the following command in your terminal:
    ```bash
    arduino-cli version
    ```
