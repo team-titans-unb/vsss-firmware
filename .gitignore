@@ -1,2 +1,5 @@
 # Ignore files from build folder in the main
-/main/build
+/main/build 
+
+# Ignore files from bin folder in the main
+/main/bin
