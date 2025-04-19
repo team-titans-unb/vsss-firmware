@@ -4,5 +4,5 @@
 # Ignore files from bin folder in the main
 /main/bin
 
-
+# Ignore files from build folder in the submodule
 **/build/
