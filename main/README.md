@@ -1,4 +1,4 @@
-# Main Code
+# Firrmware for the Titans Robotics Team
 
 This repository contains the firmware code for the Titans robotics team, developed for the robots competing in the Very Small Size Soccer League (VSSS).
 
@@ -54,7 +54,7 @@ Verify the installation and check the available boards:
 arduino-cli board listall
 ```
 
-Search for the correct board name (e.g., **ESP32 Dev Module**) and make sure it matches the version you're using (esp32:esp32:esp32dev).
+Search for the correct board name (e.g., **ESP32 Dev Module**) and make sure it matches the version you're using (esp32:esp32:esp32).
 
 ### 4. Compile the Firmware
 
