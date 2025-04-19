@@ -15,6 +15,7 @@ void LED::turnOff() {
 }
 
 void LED::blink(int duration) {
+    delay(1000);
     turnOn();
     delay(duration);
     turnOff();
