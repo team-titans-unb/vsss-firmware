@@ -1,0 +1,68 @@
+#include <Arduino.h>
+#include <math.h>
+
+// ==== Setup Encoder ====
+#define ENCODER_A 25  // OUTA
+#define ENCODER_B 26  // OUTB
+
+volatile unsigned long last_time = 0;
+volatile float omega_filtered = 0.0; // Variável filtrada
+volatile int direction = 1;
+
+const float PULSES_PER_REV = 48.0;  // 12 pulsos mecânicos * 4 (quadratura)
+
+void IRAM_ATTR encoderISR() {
+  unsigned long current_time = micros();
+  unsigned long delta_time = current_time - last_time;
+  last_time = current_time;
+
+  direction = digitalRead(ENCODER_B) == HIGH ? 1 : -1;
+
+  if (delta_time > 100) { // Filtro de ruído (delta_time mínimo de 100µs)
+    float omega_raw = direction * (TWO_PI / PULSES_PER_REV) / (delta_time / 1e6);
+    omega_filtered = 0.7 * omega_filtered + 0.3 * omega_raw; // Filtro exponencial
+  }
+}
+
+float getVelocidadeAngular() {
+  noInterrupts();
+  float w = omega_filtered;
+  interrupts();
+  return w;
+}
+
+// ==== Configuração do Motor (PWM) ====
+#define ENA 32  // PWM
+#define IN1 33
+#define IN2 14
+
+int pwm = 0;
+
+void setup() {
+  Serial.begin(115200);
+
+  // Configuração do Motor
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENA, OUTPUT);
+
+  // Configuração do Encoder
+  pinMode(ENCODER_A, INPUT_PULLUP);
+  pinMode(ENCODER_B, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A), encoderISR, CHANGE); // Interrupção em CHANGE
+}
+
+void loop() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  
+  analogWrite(ENA, pwm); // Usa analogWrite para PWM
+  pwm = (pwm < 255) ? pwm + 1 : 0;
+
+  // Exibe a velocidade
+  Serial.print("Velocidade angular: ");
+  Serial.print(getVelocidadeAngular());
+  Serial.println(" rad/s");
+
+  delay(100);
+}
